@@ -1,62 +1,37 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Menubar } from 'primeng/menubar';
 import { MenuItem } from 'primeng/api';
+import { DialogService } from 'primeng/dynamicdialog';
+import { TaskForm } from 'src/app/components/task-form/task-form';
 
 @Component({
   selector: 'tm-navbar',
   imports: [Menubar],
   templateUrl: './navbar.html',
   styleUrl: './navbar.scss',
+  providers: [DialogService],
 })
 export class Navbar {
-  items: MenuItem[] | undefined;
+  private dialogService = inject(DialogService);
+  public items: MenuItem[] = [
+    {
+      label: 'Home',
+      icon: 'pi pi-home',
+    },
+    {
+      label: 'Add Task',
+      icon: 'pi pi-star',
+      command: () => this.openNewTask(),
+    },
+  ];
 
-  ngOnInit() {
-    this.items = [
-      {
-        label: 'Home',
-        icon: 'pi pi-home',
-      },
-      {
-        label: 'Features',
-        icon: 'pi pi-star',
-      },
-      {
-        label: 'Projects',
-        icon: 'pi pi-search',
-        items: [
-          {
-            label: 'Components',
-            icon: 'pi pi-bolt',
-          },
-          {
-            label: 'Blocks',
-            icon: 'pi pi-server',
-          },
-          {
-            label: 'UI Kit',
-            icon: 'pi pi-pencil',
-          },
-          {
-            label: 'Templates',
-            icon: 'pi pi-palette',
-            items: [
-              {
-                label: 'Apollo',
-                icon: 'pi pi-palette',
-              },
-              {
-                label: 'Ultima',
-                icon: 'pi pi-palette',
-              },
-            ],
-          },
-        ],
-      },
-      {
-        label: 'Contact',
-        icon: 'pi pi-envelope',
-      },
-    ];
+  private openNewTask(): void {
+    console.log('OpenNewTask');
+    this.dialogService.open(TaskForm, {
+      header: 'Create new Task',
+      width: '50vw',
+      height: '70vh',
+      modal: true,
+    });
   }
 }

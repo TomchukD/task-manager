@@ -1,43 +1,37 @@
 <div class="grid grid-cols-3 gap-4" cdkDropListGroup>
   <div
-    id="available"
+    id="todo"
     cdkDropList
     [cdkDropListData]="available"
     (cdkDropListDropped)="drop($event)"
     class="min-h-[300px] rounded-lg border border-neutral-400 bg-neutral-100 p-3"
   >
     @for (item of available; track item.id) {
-      <div cdkDrag class="mb-2 cursor-grab rounded-md border border-neutral-400 bg-white p-3">
-        {{ item.name }}
-      </div>
+      <tm-task-card [data]="item" cdkDrag />
     }
   </div>
 
   <div
-    id="selected"
+    id="in_progress"
     cdkDropList
     [cdkDropListData]="selected"
     (cdkDropListDropped)="drop($event)"
     class="min-h-[300px] rounded-lg border border-neutral-400 bg-neutral-100 p-3"
   >
     @for (item of selected; track item.id) {
-      <div cdkDrag class="mb-2 cursor-grab rounded-md border border-neutral-400 bg-white p-3">
-        {{ item.name }}
-      </div>
+      <tm-task-card [data]="item" cdkDrag />
     }
   </div>
 
   <div
-    id="assigned"
+    id="done"
     cdkDropList
     [cdkDropListData]="assigned"
     (cdkDropListDropped)="drop($event)"
     class="min-h-[300px] rounded-lg border border-neutral-400 bg-neutral-100 p-3"
   >
     @for (item of assigned; track item.id) {
-      <div cdkDrag class="mb-2 cursor-grab rounded-md border border-neutral-400 bg-white p-3">
-        {{ item.name }}
-      </div>
+      <tm-task-card [data]="item" cdkDrag />
     }
   </div>
 </div>

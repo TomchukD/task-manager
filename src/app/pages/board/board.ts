@@ -6,44 +6,61 @@ import {
   CdkDropList,
   CdkDropListGroup,
   moveItemInArray,
-  transferArrayItem
+  transferArrayItem,
 } from '@angular/cdk/drag-drop';
-
-interface Item {
-  id: number;
-  name: string;
-}
+import { TaskCard } from 'src/app/components/task-card/task-card';
+import { Task } from 'src/app/shared/item.interface';
 
 @Component({
   selector: 'tm-board',
-  imports: [FormsModule, CdkDropListGroup, CdkDrag, CdkDropList],
+  imports: [FormsModule, CdkDropListGroup, CdkDrag, CdkDropList, TaskCard],
   templateUrl: './board.html',
   styleUrl: './board.scss',
 })
 export class Board {
-  available: Item[] = [
-    { id: 1, name: 'Product 1' },
-    { id: 2, name: 'Product 2' },
-    { id: 3, name: 'Product 3' },
-    { id: 4, name: 'Product 4' },
+  available: Task[] = [
+    {
+      id: 1,
+      title: 'Implement drag and drop',
+      description: 'Add task drag and drop between columns',
+      status: 'todo',
+      priority: 'high',
+      assignee: 'John Doe',
+      deadline: '2026-08-20',
+      createdAt: '2026-08-15',
+    },
+    {
+      id: 2,
+      title: 'Fix login validation',
+      description: 'Fix validation errors on the login form',
+      status: 'in-progress',
+      priority: 'medium',
+      assignee: 'Jane Smith',
+      deadline: '2026-08-18',
+      createdAt: '2026-08-14',
+    },
+    {
+      id: 3,
+      title: 'Update documentation',
+      description: 'Update API and project setup documentation',
+      status: 'done',
+      priority: 'low',
+      assignee: 'Alex Johnson',
+      deadline: '2026-08-16',
+      createdAt: '2026-08-10',
+    },
   ];
 
-  selected: Item[] = [
-    { id: 5, name: 'Product 5' },
-    { id: 6, name: 'Product 6' },
-  ];
+  selected: Task[] = [];
 
-  assigned: Item[] = [
-    { id: 7, name: 'Product 7' },
-    { id: 8, name: 'Product 8' },
-  ];
+  assigned: Task[] = [];
 
-  selectedAvailable: Item[] = [];
-  selectedItems: Item[] = [];
-  assignedItems: Item[] = [];
+  selectedAvailable: Task[] = [];
+  selectedItems: Task[] = [];
+  assignedItems: Task[] = [];
   ngOnInit() {}
 
-  drop(event: CdkDragDrop<Item[]>): void {
+  drop(event: CdkDragDrop<Task[]>): void {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
