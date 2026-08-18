@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   CdkDrag,
@@ -10,6 +10,7 @@ import {
 } from '@angular/cdk/drag-drop';
 import { TaskCard } from 'src/app/components/task-card/task-card';
 import { Task } from 'src/app/shared/item.interface';
+import { TaskService } from '../../services/task.service';
 
 @Component({
   selector: 'tm-board',
@@ -18,47 +19,28 @@ import { Task } from 'src/app/shared/item.interface';
   styleUrl: './board.scss',
 })
 export class Board {
-  available: Task[] = [
-    {
-      id: 1,
-      title: 'Implement drag and drop',
-      description: 'Add task drag and drop between columns',
-      status: 'todo',
-      priority: 'high',
-      assignee: 'John Doe',
-      deadline: '2026-08-20',
-      createdAt: '2026-08-15',
-    },
-    {
-      id: 2,
-      title: 'Fix login validation',
-      description: 'Fix validation errors on the login form',
-      status: 'in-progress',
-      priority: 'medium',
-      assignee: 'Jane Smith',
-      deadline: '2026-08-18',
-      createdAt: '2026-08-14',
-    },
-    {
-      id: 3,
-      title: 'Update documentation',
-      description: 'Update API and project setup documentation',
-      status: 'done',
-      priority: 'low',
-      assignee: 'Alex Johnson',
-      deadline: '2026-08-16',
-      createdAt: '2026-08-10',
-    },
-  ];
+  taskService = inject(TaskService);
+  todo: Task[] = [];
+  inProgress: Task[] = [];
+  done: Task[] = [];
 
-  selected: Task[] = [];
-
-  assigned: Task[] = [];
-
-  selectedAvailable: Task[] = [];
-  selectedItems: Task[] = [];
-  assignedItems: Task[] = [];
-  ngOnInit() {}
+  ngOnInit() {
+    this.taskService.getTasks().subscribe((tasks) => {
+      tasks.forEach((task) => {
+        switch (task.status) {
+          case 'todo':
+            this.todo.push(task);
+            break;
+          case 'in-progress':
+            this.inProgress.push(task);
+            break;
+          case 'done':
+            this.done.push(task);
+            break;
+        }
+      });
+    });
+  }
 
   drop(event: CdkDragDrop<Task[]>): void {
     if (event.previousContainer === event.container) {
