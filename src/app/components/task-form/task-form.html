@@ -1,36 +1,51 @@
 <div class="flex h-full min-h-0 flex-col">
   <div class="flex-1 min-h-0 overflow-auto p-6">
-    <div class="mx-auto flex max-w-5xl flex-col gap-5">
+    <div [formGroup]="taskForm" class="mx-auto flex max-w-5xl flex-col gap-5">
       <div>
-        <input pInputText placeholder="Task title" class="w-full text-lg font-medium" />
+        <input
+          formControlName="title"
+          pInputText
+          placeholder="Task title"
+          class="w-full text-lg font-medium"
+        />
       </div>
 
       <div class="grid min-h-0 grid-cols-[minmax(0,1fr)_280px] gap-6">
         <div class="flex min-h-[400px] flex-col">
           <label class="mb-2 text-sm font-medium"> Description </label>
 
-          <textarea pTextarea class="w-full flex-1" placeholder="Describe the task..."></textarea>
+          <textarea
+            formControlName="description"
+            pTextarea
+            class="w-full flex-1"
+            placeholder="Describe the task..."
+          ></textarea>
         </div>
 
         <div class="flex flex-col gap-5 rounded-lg border border-surface p-4">
           <div>
             <label class="mb-2 block text-sm font-medium"> Status </label>
-            <p-select class="w-full" placeholder="Select status" />
+            <p-select formControlName="status" class="w-full" placeholder="Select status" />
           </div>
 
           <div>
             <label class="mb-2 block text-sm font-medium"> Priority </label>
-            <p-select class="w-full" placeholder="Select priority" />
+            <p-select formControlName="priority" class="w-full" placeholder="Select priority" />
           </div>
 
           <div>
             <label class="mb-2 block text-sm font-medium"> Assignee </label>
-            <p-select class="w-full" placeholder="Select assignee" />
+            <p-select
+              [options]="[1, 2, 3]"
+              formControlName="assignee"
+              class="w-full"
+              placeholder="Select assignee"
+            />
           </div>
 
           <div>
             <label class="mb-2 block text-sm font-medium"> Deadline </label>
-            <p-datePicker class="w-full" placeholder="Select date" />
+            <p-datePicker formControlName="deadline" class="w-full" placeholder="Select date" />
           </div>
         </div>
       </div>
