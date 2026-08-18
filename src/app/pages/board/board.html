@@ -2,36 +2,42 @@
   <div
     id="todo"
     cdkDropList
-    [cdkDropListData]="todo"
+    [cdkDropListData]="todo()"
     (cdkDropListDropped)="drop($event)"
     class="min-h-[300px] rounded-lg border border-neutral-400 bg-neutral-100 p-3"
   >
-    @for (item of todo; track item.id) {
-      <tm-task-card [data]="item" cdkDrag />
+    @for (item of todo(); track item.id) {
+      <div cdkDrag cdkDragPreviewContainer="parent" class="mb-2 cursor-grab">
+        <tm-task-card [data]="item" />
+      </div>
     }
   </div>
 
   <div
     id="in_progress"
     cdkDropList
-    [cdkDropListData]="inProgress"
+    [cdkDropListData]="inProgress()"
     (cdkDropListDropped)="drop($event)"
     class="min-h-[300px] rounded-lg border border-neutral-400 bg-neutral-100 p-3"
   >
-    @for (item of inProgress; track item.id) {
-      <tm-task-card [data]="item" cdkDrag />
+    @for (item of inProgress(); track item.id) {
+      <div cdkDrag cdkDragPreviewContainer="parent" class="mb-2 cursor-grab">
+        <tm-task-card [data]="item" />
+      </div>
     }
   </div>
 
   <div
     id="done"
     cdkDropList
-    [cdkDropListData]="done"
+    [cdkDropListData]="done()"
     (cdkDropListDropped)="drop($event)"
     class="min-h-[300px] rounded-lg border border-neutral-400 bg-neutral-100 p-3"
   >
-    @for (item of done; track item.id) {
-      <tm-task-card [data]="item" cdkDrag />
+    @for (item of done(); track item.id) {
+      <div cdkDrag cdkDragPreviewContainer="parent" class="mb-2 cursor-grab">
+        <tm-task-card [data]="item" />
+      </div>
     }
   </div>
 </div>
