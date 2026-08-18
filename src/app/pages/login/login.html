@@ -46,23 +46,18 @@
 
         <form [formGroup]="loginForm" (ngSubmit)="onSubmitForm()" novalidate>
           <div class="field">
-            <label for="email">Email address</label>
+            <label for="user">Email address</label>
             <input
-              id="email"
+              id="user"
               class="field-control"
-              formControlName="email"
-              type="email"
+              formControlName="user"
+              type="text"
               pInputText
-              autocomplete="email"
-              placeholder="name@example.com"
-              aria-describedby="email-error"
             />
             <div id="email-error" class="field-error" aria-live="polite">
-              @if (loginForm.controls.email.touched && loginForm.controls.email.invalid) {
-                @if (loginForm.controls.email.hasError('required')) {
-                  Enter your email address.
-                } @else {
-                  Enter a valid email address.
+              @if (loginForm.controls.user.touched && loginForm.controls.user.invalid) {
+                @if (loginForm.controls.user.hasError('required')) {
+                  Enter your user name.
                 }
               }
             </div>

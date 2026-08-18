@@ -3,6 +3,7 @@ import { InputText } from 'primeng/inputtext';
 import { Password } from 'primeng/password';
 import { Button } from 'primeng/button';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -11,11 +12,12 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
   styleUrl: './login.scss',
 })
 export class Login {
+  authService = inject(AuthService);
   private fb = inject(FormBuilder).nonNullable;
 
   loginForm = this.fb.group({
-    email: ['', [Validators.required, Validators.email]],
-    password: ['', Validators.required],
+    user: ['dmitry', [Validators.required]],
+    password: ['task', Validators.required],
   });
 
   onSubmitForm(): void {
@@ -23,6 +25,9 @@ export class Login {
       this.loginForm.markAllAsTouched();
       return;
     }
-    console.log(this.loginForm.value);
+    this.authService.login(this.loginForm.getRawValue())
+      .subscribe(auth => {
+        console.log(auth);
+      });
   }
 }
