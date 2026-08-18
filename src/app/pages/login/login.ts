@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { InputText } from 'primeng/inputtext';
 import { Password } from 'primeng/password';
 import { Button } from 'primeng/button';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
@@ -24,5 +24,5 @@ export class Login {
       return;
     }
     console.log(this.loginForm.value);
-  };
+  }
 }
