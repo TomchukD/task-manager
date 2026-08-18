@@ -29,6 +29,7 @@ export const routes: Routes = [
   },
   {
     path: '**',
-    redirectTo: '/task-manager/board',
+    // redirectTo: '/task-manager/board',
+    redirectTo: '/login',
   },
 ];

@@ -1,1 +1,11 @@
-<p>login works!</p>
+<div [formGroup]="loginForm">
+<div class="card flex justify-center">
+  <input formControlName="email" type="text" pInputText />
+</div>
+<div class="card flex justify-center">
+  <p-password formControlName="password" [feedback]="false" autocomplete="off" />
+  <p-button (click)="onSubmitForm()">
+    Save
+  </p-button>
+</div>
+</div>
