@@ -6,7 +6,6 @@
       </div>
       <p-tag [value]="data.priority" />
     </div>
-    <!--    todo  transform to CamlCase Name -->
-    <p-avatar [label]="data.assignee" shape="circle" />
+    <p-avatar [label]="data.assignee | initials" [attr.title]="data.assignee" shape="circle" />
   </p-card>
 }
