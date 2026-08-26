@@ -25,6 +25,10 @@ export class Board {
   inProgress: Task[] = [];
   done: Task[] = [];
 
+  get totalTasks(): number {
+    return this.todo.length + this.inProgress.length + this.done.length;
+  }
+
   ngOnInit(): void {
     const tasks = this.route.snapshot.data['tasks'] as Task[];
 

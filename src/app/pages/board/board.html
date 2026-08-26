@@ -1,37 +1,92 @@
-<div class="grid grid-cols-3 gap-4" cdkDropListGroup>
-  <div
-    id="todo"
-    cdkDropList
-    [cdkDropListData]="todo"
-    (cdkDropListDropped)="drop($event)"
-    class="min-h-[300px] rounded-lg border border-neutral-400 bg-neutral-100 p-3"
-  >
-    @for (item of todo; track item.id) {
-      <tm-task-card [data]="item" cdkDrag />
-    }
-  </div>
+<main class="board-shell">
+  <header class="board-header">
+    <div>
+      <p class="board-eyebrow">Workspace · Tasks</p>
+      <h1>Keep work moving.</h1>
+      <p class="board-description">Drag tasks between stages as the work progresses.</p>
+    </div>
 
-  <div
-    id="in_progress"
-    cdkDropList
-    [cdkDropListData]="inProgress"
-    (cdkDropListDropped)="drop($event)"
-    class="min-h-[300px] rounded-lg border border-neutral-400 bg-neutral-100 p-3"
-  >
-    @for (item of inProgress; track item.id) {
-      <tm-task-card [data]="item" cdkDrag />
-    }
-  </div>
+    <div class="board-total" aria-label="Total tasks on the board">
+      <span class="board-total__mark" aria-hidden="true"></span>
+      <strong>{{ totalTasks }}</strong>
+      <span>tasks on board</span>
+    </div>
+  </header>
 
-  <div
-    id="done"
-    cdkDropList
-    [cdkDropListData]="done"
-    (cdkDropListDropped)="drop($event)"
-    class="min-h-[300px] rounded-lg border border-neutral-400 bg-neutral-100 p-3"
-  >
-    @for (item of done; track item.id) {
-      <tm-task-card [data]="item" cdkDrag />
-    }
+  <div class="board-columns" cdkDropListGroup>
+    <section class="board-column board-column--todo" aria-labelledby="todo-title">
+      <header class="column-header">
+        <div class="column-title-row">
+          <span class="status-mark" aria-hidden="true"></span>
+          <h2 id="todo-title">To do</h2>
+          <span class="task-count">{{ todo.length }}</span>
+        </div>
+        <p>Ready to be picked up</p>
+      </header>
+
+      <div
+        id="todo"
+        cdkDropList
+        [cdkDropListData]="todo"
+        (cdkDropListDropped)="drop($event)"
+        class="task-list"
+      >
+        @for (item of todo; track item.id) {
+          <tm-task-card [data]="item" cdkDrag />
+        } @empty {
+          <div class="empty-column">No tasks waiting</div>
+        }
+      </div>
+    </section>
+
+    <section class="board-column board-column--progress" aria-labelledby="progress-title">
+      <header class="column-header">
+        <div class="column-title-row">
+          <span class="status-mark" aria-hidden="true"></span>
+          <h2 id="progress-title">In progress</h2>
+          <span class="task-count">{{ inProgress.length }}</span>
+        </div>
+        <p>Currently moving forward</p>
+      </header>
+
+      <div
+        id="in_progress"
+        cdkDropList
+        [cdkDropListData]="inProgress"
+        (cdkDropListDropped)="drop($event)"
+        class="task-list"
+      >
+        @for (item of inProgress; track item.id) {
+          <tm-task-card [data]="item" cdkDrag />
+        } @empty {
+          <div class="empty-column">Nothing in progress</div>
+        }
+      </div>
+    </section>
+
+    <section class="board-column board-column--done" aria-labelledby="done-title">
+      <header class="column-header">
+        <div class="column-title-row">
+          <span class="status-mark" aria-hidden="true"></span>
+          <h2 id="done-title">Done</h2>
+          <span class="task-count">{{ done.length }}</span>
+        </div>
+        <p>Completed work</p>
+      </header>
+
+      <div
+        id="done"
+        cdkDropList
+        [cdkDropListData]="done"
+        (cdkDropListDropped)="drop($event)"
+        class="task-list"
+      >
+        @for (item of done; track item.id) {
+          <tm-task-card [data]="item" cdkDrag />
+        } @empty {
+          <div class="empty-column">Completed tasks land here</div>
+        }
+      </div>
+    </section>
   </div>
-</div>
+</main>
