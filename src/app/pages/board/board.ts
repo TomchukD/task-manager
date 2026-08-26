@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   CdkDrag,
@@ -24,9 +24,13 @@ export class Board {
   inProgress = signal<Task[]>([]);
   done = signal<Task[]>([]);
 
-  get totalTasks(): number {
-    return this.todo.length + this.inProgress.length + this.done.length;
-  }
+  // get totalTasks(): number {
+  //   return this.todo().length + this.inProgress.length + this.done.length;
+  // }
+
+  totalTasks = computed(() => {
+    return this.todo().length + this.inProgress().length + this.done().length;
+  });
 
   private readonly statusByListId: Record<string, Task['status']> = {
     todo: 'todo',
@@ -36,11 +40,10 @@ export class Board {
 
   ngOnInit() {
     const tasks = this.route.snapshot.data['tasks'] as Task[];
-    this.taskService.getTasks().subscribe((tasks) => {
-      this.todo.set(tasks.filter((task) => task.status === 'todo'));
-      this.inProgress.set(tasks.filter((task) => task.status === 'in-progress'));
-      this.done.set(tasks.filter((task) => task.status === 'done'));
-    });
+
+    this.todo.set(tasks.filter((task) => task.status === 'todo'));
+    this.inProgress.set(tasks.filter((task) => task.status === 'in-progress'));
+    this.done.set(tasks.filter((task) => task.status === 'done'));
   }
 
   drop(event: CdkDragDrop<Task[]>): void {
