@@ -10,7 +10,7 @@ import {
 } from '@angular/cdk/drag-drop';
 import { TaskCard } from 'src/app/components/task-card/task-card';
 import { Task } from 'src/app/shared/item.interface';
-import { TaskService } from '../../services/task.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'tm-board',
@@ -19,26 +19,27 @@ import { TaskService } from '../../services/task.service';
   styleUrl: './board.scss',
 })
 export class Board {
-  taskService = inject(TaskService);
+  private readonly route = inject(ActivatedRoute);
+
   todo: Task[] = [];
   inProgress: Task[] = [];
   done: Task[] = [];
 
-  ngOnInit() {
-    this.taskService.getTasks().subscribe((tasks) => {
-      tasks.forEach((task) => {
-        switch (task.status) {
-          case 'todo':
-            this.todo.push(task);
-            break;
-          case 'in-progress':
-            this.inProgress.push(task);
-            break;
-          case 'done':
-            this.done.push(task);
-            break;
-        }
-      });
+  ngOnInit(): void {
+    const tasks = this.route.snapshot.data['tasks'] as Task[];
+
+    tasks.forEach((task) => {
+      switch (task.status) {
+        case 'todo':
+          this.todo.push(task);
+          break;
+        case 'in-progress':
+          this.inProgress.push(task);
+          break;
+        case 'done':
+          this.done.push(task);
+          break;
+      }
     });
   }
 

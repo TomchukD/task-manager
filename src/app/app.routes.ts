@@ -3,6 +3,7 @@ import { Board } from 'src/app/pages/board/board';
 import { Layout } from 'src/app/components/layout/layout';
 import { TaskDetail } from 'src/app/pages/task-detail/task-detail';
 import { Profile } from 'src/app/pages/profile/profile';
+import { tasksResolver } from 'src/app/resolvers/tasks.resolver';
 
 export const routes: Routes = [
   {
@@ -16,6 +17,9 @@ export const routes: Routes = [
       {
         path: 'board',
         component: Board,
+        resolve: {
+          tasks: tasksResolver,
+        },
       },
       {
         path: 'board/task/:id',
