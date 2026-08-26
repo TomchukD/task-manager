@@ -17,3 +17,25 @@ body {
     -moz-osx-font-smoothing: grayscale;
     background: light-dark(var(--p-surface-0), var(--p-surface-950));
 }
+
+.task-form-dialog.p-dialog {
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 1.75rem;
+  background: #0d1118;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.42);
+}
+
+.task-form-dialog .p-dialog-content {
+  padding: 0;
+  background: transparent;
+}
+
+.task-form-overlay.p-select-overlay,
+.task-form-overlay.p-datepicker-panel {
+  color: #f4f6fa;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 0.9rem;
+  background: #1a2130;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+}

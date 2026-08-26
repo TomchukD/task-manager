@@ -1,60 +1,95 @@
-<div class="flex h-full min-h-0 flex-col">
-  <div class="flex-1 min-h-0 overflow-auto p-6">
-    <div [formGroup]="taskForm" class="mx-auto flex max-w-5xl flex-col gap-5">
-      <div>
-        <input
-          formControlName="title"
-          pInputText
-          placeholder="Task title"
-          class="w-full text-lg font-medium"
+<div class="task-form">
+  <header class="task-form__header">
+    <p class="task-form__eyebrow">Workspace · New task</p>
+    <h1>Create a task.</h1>
+    <p class="task-form__lead">Give it a title, a stage, and enough context to start moving.</p>
+  </header>
+
+  <div class="task-form__body" [formGroup]="taskForm">
+    <div class="task-form__main">
+      <label class="field-label" for="task-title">Title</label>
+      <input
+        id="task-title"
+        class="title-input"
+        formControlName="title"
+        pInputText
+        placeholder="What needs to be done?"
+      />
+
+      <label class="field-label" for="task-description">Description</label>
+      <textarea
+        id="task-description"
+        class="description-input"
+        formControlName="description"
+        pTextarea
+        placeholder="Add context, links, or notes for whoever picks this up..."
+      ></textarea>
+    </div>
+
+    <aside class="task-form__meta" [attr.data-status]="taskForm.controls.status.value">
+      <p class="meta-kicker">Details</p>
+
+      <div class="meta-field" [attr.data-status]="taskForm.controls.status.value">
+        <label class="field-label" for="task-status">Status</label>
+        <p-select
+          inputId="task-status"
+          formControlName="status"
+          [options]="statusOptions"
+          optionLabel="label"
+          optionValue="value"
+          placeholder="Select status"
+          appendTo="body"
+          panelStyleClass="task-form-overlay"
+          styleClass="meta-control"
         />
       </div>
 
-      <div class="grid min-h-0 grid-cols-[minmax(0,1fr)_280px] gap-6">
-        <div class="flex min-h-[400px] flex-col">
-          <label class="mb-2 text-sm font-medium"> Description </label>
-
-          <textarea
-            formControlName="description"
-            pTextarea
-            class="w-full flex-1"
-            placeholder="Describe the task..."
-          ></textarea>
-        </div>
-
-        <div class="flex flex-col gap-5 rounded-lg border border-surface p-4">
-          <div>
-            <label class="mb-2 block text-sm font-medium"> Status </label>
-            <p-select formControlName="status" class="w-full" placeholder="Select status" />
-          </div>
-
-          <div>
-            <label class="mb-2 block text-sm font-medium"> Priority </label>
-            <p-select formControlName="priority" class="w-full" placeholder="Select priority" />
-          </div>
-
-          <div>
-            <label class="mb-2 block text-sm font-medium"> Assignee </label>
-            <p-select
-              [options]="[1, 2, 3]"
-              formControlName="assignee"
-              class="w-full"
-              placeholder="Select assignee"
-            />
-          </div>
-
-          <div>
-            <label class="mb-2 block text-sm font-medium"> Deadline </label>
-            <p-datePicker formControlName="deadline" class="w-full" placeholder="Select date" />
-          </div>
-        </div>
+      <div class="meta-field" [attr.data-priority]="taskForm.controls.priority.value">
+        <label class="field-label" for="task-priority">Priority</label>
+        <p-select
+          inputId="task-priority"
+          formControlName="priority"
+          [options]="priorityOptions"
+          optionLabel="label"
+          optionValue="value"
+          placeholder="Select priority"
+          appendTo="body"
+          panelStyleClass="task-form-overlay"
+          styleClass="meta-control"
+        />
       </div>
-    </div>
+
+      <div class="meta-field">
+        <label class="field-label" for="task-assignee">Assignee</label>
+        <p-select
+          inputId="task-assignee"
+          formControlName="assignee"
+          [options]="assigneeOptions"
+          placeholder="Select assignee"
+          appendTo="body"
+          panelStyleClass="task-form-overlay"
+          styleClass="meta-control"
+        />
+      </div>
+
+      <div class="meta-field">
+        <label class="field-label" for="task-deadline">Deadline</label>
+        <p-datePicker
+          inputId="task-deadline"
+          formControlName="deadline"
+          placeholder="Select date"
+          dateFormat="M d, yy"
+          [showIcon]="true"
+          appendTo="body"
+          panelStyleClass="task-form-overlay"
+          styleClass="meta-control"
+        />
+      </div>
+    </aside>
   </div>
 
-  <div class="flex shrink-0 justify-end gap-2 border-t border-surface px-6 py-4">
-    <p-button label="Cancel" severity="secondary" text />
-
-    <p-button label="Create task" icon="pi pi-plus" raised />
-  </div>
+  <footer class="task-form__footer">
+    <p-button label="Cancel" severity="secondary" [text]="true" (onClick)="close()" />
+    <p-button label="Create task" icon="pi pi-plus" [disabled]="taskForm.invalid" />
+  </footer>
 </div>

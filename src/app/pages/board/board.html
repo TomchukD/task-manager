@@ -32,7 +32,7 @@
         class="task-list"
       >
         @for (item of todo(); track item.id) {
-          <div cdkDrag cdkDragPreviewContainer="parent" class="mb-2 cursor-grab">
+          <div cdkDrag cdkDragPreviewContainer="parent">
             <tm-task-card [data]="item" />
           </div>
         } @empty {
@@ -59,7 +59,7 @@
         class="task-list"
       >
         @for (item of inProgress(); track item.id) {
-          <div cdkDrag cdkDragPreviewContainer="parent" class="mb-2 cursor-grab">
+          <div cdkDrag cdkDragPreviewContainer="parent">
             <tm-task-card [data]="item" />
           </div>
         } @empty {
@@ -86,7 +86,7 @@
         class="task-list"
       >
         @for (item of done(); track item.id) {
-          <div cdkDrag cdkDragPreviewContainer="parent" class="mb-2 cursor-grab">
+          <div cdkDrag cdkDragPreviewContainer="parent">
             <tm-task-card [data]="item" />
           </div>
         } @empty {

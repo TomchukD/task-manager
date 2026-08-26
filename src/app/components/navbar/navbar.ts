@@ -28,10 +28,19 @@ export class Navbar {
   private openNewTask(): void {
     console.log('OpenNewTask');
     this.dialogService.open(TaskForm, {
-      header: 'Create new Task',
-      width: '50vw',
-      height: '70vh',
+      showHeader: false,
       modal: true,
+      dismissableMask: true,
+      styleClass: 'task-form-dialog',
+      contentStyle: {
+        padding: '0',
+        overflow: 'hidden',
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+      },
+      width: 'min(56rem, 92vw)',
+      height: 'min(42rem, 90vh)',
     });
   }
 }
