@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   CdkDrag,
@@ -20,43 +20,65 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class Board {
   private readonly route = inject(ActivatedRoute);
-
-  todo: Task[] = [];
-  inProgress: Task[] = [];
-  done: Task[] = [];
+  todo = signal<Task[]>([]);
+  inProgress = signal<Task[]>([]);
+  done = signal<Task[]>([]);
 
   get totalTasks(): number {
     return this.todo.length + this.inProgress.length + this.done.length;
   }
 
-  ngOnInit(): void {
-    const tasks = this.route.snapshot.data['tasks'] as Task[];
+  private readonly statusByListId: Record<string, Task['status']> = {
+    todo: 'todo',
+    in_progress: 'in-progress',
+    done: 'done',
+  };
 
-    tasks.forEach((task) => {
-      switch (task.status) {
-        case 'todo':
-          this.todo.push(task);
-          break;
-        case 'in-progress':
-          this.inProgress.push(task);
-          break;
-        case 'done':
-          this.done.push(task);
-          break;
-      }
+  ngOnInit() {
+    const tasks = this.route.snapshot.data['tasks'] as Task[];
+    this.taskService.getTasks().subscribe((tasks) => {
+      this.todo.set(tasks.filter((task) => task.status === 'todo'));
+      this.inProgress.set(tasks.filter((task) => task.status === 'in-progress'));
+      this.done.set(tasks.filter((task) => task.status === 'done'));
     });
   }
 
   drop(event: CdkDragDrop<Task[]>): void {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-    } else {
-      transferArrayItem(
-        event.previousContainer.data,
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex,
-      );
+      this.syncList(event.container.id, event.container.data);
+      return;
+    }
+
+    transferArrayItem(
+      event.previousContainer.data,
+      event.container.data,
+      event.previousIndex,
+      event.currentIndex,
+    );
+
+    const task = event.container.data[event.currentIndex];
+    const status = this.statusByListId[event.container.id];
+    if (task && status) {
+      task.status = status;
+    }
+
+    this.syncList(event.previousContainer.id, event.previousContainer.data);
+    this.syncList(event.container.id, event.container.data);
+  }
+
+  private syncList(listId: string, data: Task[]): void {
+    const copy = [...data];
+    switch (listId) {
+      case 'todo':
+        this.todo.set(copy);
+        break;
+      case 'in_progress':
+        this.inProgress.set(copy);
+        break;
+      case 'done':
+        this.done.set(copy);
+        break;
     }
   }
 }
