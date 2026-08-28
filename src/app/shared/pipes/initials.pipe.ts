@@ -5,7 +5,7 @@ import { Pipe, PipeTransform } from '@angular/core';
   standalone: true,
 })
 export class InitialsPipe implements PipeTransform {
-  transform(value?: string): string {
+  transform(value?: string | null): string {
     const words = value?.trim().split(/\s+/).filter(Boolean) ?? [];
 
     if (words.length === 0) {

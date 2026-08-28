@@ -11,22 +11,22 @@ import {
 import { TaskCard } from 'src/app/components/task-card/task-card';
 import { Task } from 'src/app/shared/item.interface';
 import { ActivatedRoute } from '@angular/router';
+import { TaskForm } from '../../components/task-form/task-form';
+import { DialogService } from 'primeng/dynamicdialog';
 
 @Component({
   selector: 'tm-board',
   imports: [FormsModule, CdkDropListGroup, CdkDrag, CdkDropList, TaskCard],
   templateUrl: './board.html',
   styleUrl: './board.scss',
+  providers: [DialogService],
 })
 export class Board {
+  private dialogService = inject(DialogService);
   private readonly route = inject(ActivatedRoute);
   todo = signal<Task[]>([]);
   inProgress = signal<Task[]>([]);
   done = signal<Task[]>([]);
-
-  // get totalTasks(): number {
-  //   return this.todo().length + this.inProgress.length + this.done.length;
-  // }
 
   totalTasks = computed(() => {
     return this.todo().length + this.inProgress().length + this.done().length;
@@ -83,5 +83,26 @@ export class Board {
         this.done.set(copy);
         break;
     }
+  }
+
+  public openTask(taskId: number): void {
+    this.dialogService.open(TaskForm, {
+      data: {
+        taskId,
+      },
+      showHeader: false,
+      modal: true,
+      dismissableMask: true,
+      styleClass: 'task-form-dialog',
+      contentStyle: {
+        padding: '0',
+        overflow: 'hidden',
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+      },
+      width: 'min(56rem, 92vw)',
+      height: 'min(42rem, 90vh)',
+    });
   }
 }

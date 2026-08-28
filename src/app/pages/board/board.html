@@ -33,7 +33,7 @@
       >
         @for (item of todo(); track item.id) {
           <div cdkDrag cdkDragPreviewContainer="parent">
-            <tm-task-card [data]="item" />
+            <tm-task-card [data]="item" (click)="openTask(item.id)" />
           </div>
         } @empty {
           <div class="empty-column">No tasks waiting</div>
@@ -60,7 +60,7 @@
       >
         @for (item of inProgress(); track item.id) {
           <div cdkDrag cdkDragPreviewContainer="parent">
-            <tm-task-card [data]="item" />
+            <tm-task-card [data]="item" (click)="openTask(item.id)" />
           </div>
         } @empty {
           <div class="empty-column">Nothing in progress</div>
@@ -87,7 +87,7 @@
       >
         @for (item of done(); track item.id) {
           <div cdkDrag cdkDragPreviewContainer="parent">
-            <tm-task-card [data]="item" />
+            <tm-task-card [data]="item" (click)="openTask(item.id)" />
           </div>
         } @empty {
           <div class="empty-column">Completed tasks land here</div>

@@ -5,8 +5,9 @@ import { Button } from 'primeng/button';
 import { Select } from 'primeng/select';
 import { DatePicker } from 'primeng/datepicker';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { DynamicDialogRef } from 'primeng/dynamicdialog';
+import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Task } from 'src/app/shared/item.interface';
+import { TaskService } from '../../services/task.service';
 
 @Component({
   selector: 'tm-task-form',
@@ -17,6 +18,8 @@ import { Task } from 'src/app/shared/item.interface';
 export class TaskForm {
   private fb = inject(FormBuilder);
   private dialogRef = inject(DynamicDialogRef, { optional: true });
+  private config = inject(DynamicDialogConfig);
+  private taskService = inject(TaskService);
 
   readonly statusOptions: { label: string; value: Task['status'] }[] = [
     { label: 'To do', value: 'todo' },
@@ -30,16 +33,31 @@ export class TaskForm {
     { label: 'High', value: 'high' },
   ];
 
-  readonly assigneeOptions = ['Alex Rivera', 'Sam Chen', 'Jordan Blake'];
+  public assigneeOptions: string[] = [];
 
   taskForm = this.fb.group({
     title: ['', Validators.required],
-    assignee: ['', Validators.required],
+    assignee: [''],
     description: [''],
     status: ['todo' as Task['status'], Validators.required],
     priority: ['medium' as Task['priority']],
-    deadline: [null as Date | null],
+    deadline: [null as string | null],
   });
+
+  ngOnInit() {
+    if (this.config.data.taskId) {
+      this.taskService.getUsers().subscribe((users) => {
+        this.assigneeOptions = users.users;
+        this.taskSettings();
+      });
+    }
+  }
+
+  private taskSettings(): void {
+    this.taskService.getTaskById(this.config.data.taskId).subscribe((task) => {
+      this.taskForm.patchValue(task);
+    });
+  }
 
   close(): void {
     this.dialogRef?.close();

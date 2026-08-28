@@ -26,7 +26,6 @@ export class Navbar {
   ];
 
   private openNewTask(): void {
-    console.log('OpenNewTask');
     this.dialogService.open(TaskForm, {
       showHeader: false,
       modal: true,
