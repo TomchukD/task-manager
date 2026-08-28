@@ -18,7 +18,7 @@ import { TaskService } from '../../services/task.service';
 export class TaskForm {
   private fb = inject(FormBuilder);
   private dialogRef = inject(DynamicDialogRef, { optional: true });
-  private config = inject(DynamicDialogConfig);
+  protected config = inject(DynamicDialogConfig);
   private taskService = inject(TaskService);
 
   readonly statusOptions: { label: string; value: Task['status'] }[] = [
@@ -46,10 +46,7 @@ export class TaskForm {
 
   ngOnInit() {
     if (this.config.data.taskId) {
-      this.taskService.getUsers().subscribe((users) => {
-        this.assigneeOptions = users.users;
-        this.taskSettings();
-      });
+      this.taskSettings();
     }
   }
 

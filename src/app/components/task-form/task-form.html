@@ -64,7 +64,7 @@
         <p-select
           inputId="task-assignee"
           formControlName="assignee"
-          [options]="assigneeOptions"
+          [options]="this.config.data.assignee"
           placeholder="Select assignee"
           appendTo="body"
           panelStyleClass="task-form-overlay"
