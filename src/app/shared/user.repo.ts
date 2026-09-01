@@ -7,12 +7,18 @@ import { TaskService } from '../services/task.service';
 })
 export class UserRepo {
   private readonly _assigneeUser = signal<string[]>([]);
+  private readonly _selectedAssignee = signal('All');
   private readonly _loading = signal(false);
   private readonly userService = inject(TaskService);
   private hasLoaded = false;
 
   readonly assigneeUser = this._assigneeUser.asReadonly();
+  readonly selectedAssignee = this._selectedAssignee.asReadonly();
   readonly loading = this._loading.asReadonly();
+
+  selectAssignee(assignee: string): void {
+    this._selectedAssignee.set(assignee);
+  }
 
   getUsers(): void {
     if (this.hasLoaded || this._loading()) {

@@ -33,9 +33,15 @@ export class Navbar {
 
   assigneeOptions = computed(() => ['All', ...this.userRepo.assigneeUser()]);
 
-  assigneeFilter = this.fb.group({
-    assignee: ['All'],
+  assigneeFilter = this.fb.nonNullable.group({
+    assignee: this.userRepo.selectedAssignee(),
   });
+
+  constructor() {
+    this.assigneeFilter.controls.assignee.valueChanges.subscribe((assignee) => {
+      this.userRepo.selectAssignee(assignee);
+    });
+  }
 
   private openNewTask(): void {
     this.dialogService.open(TaskForm, {

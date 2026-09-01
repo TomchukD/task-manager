@@ -29,8 +29,11 @@ export class Board {
   todo = signal<Task[]>([]);
   inProgress = signal<Task[]>([]);
   done = signal<Task[]>([]);
+  visibleTodo = computed(() => this.filterTasks(this.todo()));
+  visibleInProgress = computed(() => this.filterTasks(this.inProgress()));
+  visibleDone = computed(() => this.filterTasks(this.done()));
   totalTasks = computed(() => {
-    return this.todo().length + this.inProgress().length + this.done().length;
+    return this.visibleTodo().length + this.visibleInProgress().length + this.visibleDone().length;
   });
 
   private readonly statusByListId: Record<string, Task['status']> = {
@@ -70,6 +73,13 @@ export class Board {
 
     this.syncList(event.previousContainer.id, event.previousContainer.data);
     this.syncList(event.container.id, event.container.data);
+  }
+
+  private filterTasks(tasks: Task[]): Task[] {
+    const selectedAssignee = this.userRepo.selectedAssignee();
+    return selectedAssignee === 'All'
+      ? tasks
+      : tasks.filter((task) => task.assignee === selectedAssignee);
   }
 
   private syncList(listId: string, data: Task[]): void {

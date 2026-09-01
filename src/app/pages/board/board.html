@@ -19,7 +19,7 @@
         <div class="column-title-row">
           <span class="status-mark" aria-hidden="true"></span>
           <h2 id="todo-title">To do</h2>
-          <span class="task-count">{{ todo().length }}</span>
+          <span class="task-count">{{ visibleTodo().length }}</span>
         </div>
         <p>Ready to be picked up</p>
       </header>
@@ -31,7 +31,7 @@
         (cdkDropListDropped)="drop($event)"
         class="task-list"
       >
-        @for (item of todo(); track item.id) {
+        @for (item of visibleTodo(); track item.id) {
           <div cdkDrag cdkDragPreviewContainer="parent">
             <tm-task-card [data]="item" (click)="openTask(item.id)" />
           </div>
@@ -46,7 +46,7 @@
         <div class="column-title-row">
           <span class="status-mark" aria-hidden="true"></span>
           <h2 id="progress-title">In progress</h2>
-          <span class="task-count">{{ inProgress().length }}</span>
+          <span class="task-count">{{ visibleInProgress().length }}</span>
         </div>
         <p>Currently moving forward</p>
       </header>
@@ -58,7 +58,7 @@
         (cdkDropListDropped)="drop($event)"
         class="task-list"
       >
-        @for (item of inProgress(); track item.id) {
+        @for (item of visibleInProgress(); track item.id) {
           <div cdkDrag cdkDragPreviewContainer="parent">
             <tm-task-card [data]="item" (click)="openTask(item.id)" />
           </div>
@@ -73,7 +73,7 @@
         <div class="column-title-row">
           <span class="status-mark" aria-hidden="true"></span>
           <h2 id="done-title">Done</h2>
-          <span class="task-count">{{ done().length }}</span>
+          <span class="task-count">{{ visibleDone().length }}</span>
         </div>
         <p>Completed work</p>
       </header>
@@ -85,7 +85,7 @@
         (cdkDropListDropped)="drop($event)"
         class="task-list"
       >
-        @for (item of done(); track item.id) {
+        @for (item of visibleDone(); track item.id) {
           <div cdkDrag cdkDragPreviewContainer="parent">
             <tm-task-card [data]="item" (click)="openTask(item.id)" />
           </div>
