@@ -1,3 +1,13 @@
-<div class="card">
+<div class="card" [formGroup]="assigneeFilter">
   <p-menubar [model]="items" />
+  <p-select
+    [loading]="loading()"
+    inputId="task-assignee"
+    formControlName="assignee"
+    [options]="this.assigneeOptions()"
+    placeholder="Select assignee"
+    appendTo="body"
+    panelStyleClass="task-form-overlay"
+    styleClass="meta-control"
+  />
 </div>

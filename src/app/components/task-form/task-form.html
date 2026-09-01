@@ -1,6 +1,8 @@
 <div class="task-form">
   <header class="task-form__header">
-    <p class="task-form__eyebrow">Workspace · New task</p>
+    <p class="task-form__eyebrow">
+      Workspace · {{ this.config.data.taskId ? 'Change Task' : 'New task' }}
+    </p>
     <h1>Create a task.</h1>
     <p class="task-form__lead">Give it a title, a stage, and enough context to start moving.</p>
   </header>
