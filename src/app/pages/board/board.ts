@@ -14,15 +14,31 @@ import { ActivatedRoute } from '@angular/router';
 import { TaskForm } from '../../components/task-form/task-form';
 import { DialogService } from 'primeng/dynamicdialog';
 import { UserRepo } from '../../shared/user.repo';
+import { Store } from '@ngrx/store';
+import { selectTaskError, selectTaskLoading, selectTaskState } from 'src/app/store/board/selectors';
+import { AsyncPipe, JsonPipe } from '@angular/common';
+import { Button } from 'primeng/button';
+import { loadData, loadDataError, loadDataSuccess } from 'src/app/store/board/actions';
 
 @Component({
   selector: 'tm-board',
-  imports: [FormsModule, CdkDropListGroup, CdkDrag, CdkDropList, TaskCard],
+  imports: [
+    FormsModule,
+    CdkDropListGroup,
+    CdkDrag,
+    CdkDropList,
+    TaskCard,
+    AsyncPipe,
+    Button,
+    JsonPipe,
+  ],
   templateUrl: './board.html',
   styleUrl: './board.scss',
   providers: [DialogService],
 })
 export class Board {
+  private store = inject(Store);
+
   private dialogService = inject(DialogService);
   private userRepo = inject(UserRepo);
   private readonly route = inject(ActivatedRoute);
@@ -41,6 +57,10 @@ export class Board {
     in_progress: 'in-progress',
     done: 'done',
   };
+
+  public readonly storeTask = this.store.select(selectTaskState);
+  public readonly storeTaskLoad = this.store.select(selectTaskLoading);
+  public readonly storeTaskError = this.store.select(selectTaskError);
 
   ngOnInit() {
     const tasks = this.route.snapshot.data['tasks'] as Task[];
@@ -116,5 +136,36 @@ export class Board {
       width: 'min(56rem, 92vw)',
       height: 'min(42rem, 90vh)',
     });
+  }
+
+  load(): void {
+    this.store.dispatch(loadData());
+    setTimeout(() => {
+      this.store.dispatch(
+        loadDataSuccess({
+          items: [
+            {
+              status: 'todo',
+              title: 'asd',
+              id: 1,
+              createdAt: '',
+              priority: 'low',
+              assignee: 'ad',
+              deadline: 'asd',
+              description: '',
+            },
+          ],
+        }),
+      );
+    }, 3000);
+  }
+
+  error(): void {
+    setTimeout(() => {
+      this.store.dispatch(loadDataError({ error: 'Error to load data' }));
+    }, 5000);
+    setTimeout(() => {
+      this.store.dispatch(loadDataError({ error: '' }));
+    }, 7000);
   }
 }

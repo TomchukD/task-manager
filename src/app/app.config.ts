@@ -1,4 +1,9 @@
-import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZonelessChangeDetection } from '@angular/core';
+import {
+  ApplicationConfig,
+  isDevMode,
+  provideBrowserGlobalErrorListeners,
+  provideZonelessChangeDetection,
+} from '@angular/core';
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
@@ -8,6 +13,13 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 import { providePrimeNG } from 'primeng/config';
 import Aura from '@primeuix/themes/aura';
 import { authInterceptor } from './interceptors/auth.interceptor';
+import { provideStoreDevtools } from '@ngrx/store-devtools';
+import { provideStore } from '@ngrx/store';
+import { taskReducer } from 'src/app/store/board/reducer';
+
+const store = {
+  task: taskReducer,
+};
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -22,5 +34,7 @@ export const appConfig: ApplicationConfig = {
     }),
     provideAnimationsAsync(),
     provideAnimations(),
+    provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
+    provideStore(store),
   ],
 };

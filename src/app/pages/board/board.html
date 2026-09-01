@@ -1,4 +1,10 @@
 <main class="board-shell">
+  <p>1--{{ storeTask | async | json }}</p>
+  <p>2--{{ storeTaskLoad | async }}</p>
+  <p>3--{{ storeTaskError | async | json }}</p>
+
+  <p-button (click)="load()">load</p-button>
+  <p-button (click)="error()">error</p-button>
   <header class="board-header">
     <div>
       <p class="board-eyebrow">Workspace · Tasks</p>
