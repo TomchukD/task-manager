@@ -9,11 +9,11 @@ import {
   transferArrayItem,
 } from '@angular/cdk/drag-drop';
 import { TaskCard } from 'src/app/components/task-card/task-card';
-import { Task, User } from 'src/app/shared/item.interface';
+import { Task } from 'src/app/shared/item.interface';
 import { ActivatedRoute } from '@angular/router';
 import { TaskForm } from '../../components/task-form/task-form';
 import { DialogService } from 'primeng/dynamicdialog';
-import { TaskService } from '../../services/task.service';
+import { UserRepo } from '../../shared/user.repo';
 
 @Component({
   selector: 'tm-board',
@@ -24,13 +24,11 @@ import { TaskService } from '../../services/task.service';
 })
 export class Board {
   private dialogService = inject(DialogService);
-  private taskService = inject(TaskService);
+  private userRepo = inject(UserRepo);
   private readonly route = inject(ActivatedRoute);
   todo = signal<Task[]>([]);
   inProgress = signal<Task[]>([]);
   done = signal<Task[]>([]);
-  users = signal<User['users']>([]);
-
   totalTasks = computed(() => {
     return this.todo().length + this.inProgress().length + this.done().length;
   });
@@ -43,9 +41,7 @@ export class Board {
 
   ngOnInit() {
     const tasks = this.route.snapshot.data['tasks'] as Task[];
-    this.taskService.getUsers().subscribe((users) => {
-      this.users.set(users.users);
-    });
+    this.userRepo.getUsers();
 
     this.todo.set(tasks.filter((task) => task.status === 'todo'));
     this.inProgress.set(tasks.filter((task) => task.status === 'in-progress'));
@@ -95,7 +91,6 @@ export class Board {
     this.dialogService.open(TaskForm, {
       data: {
         taskId,
-        assignee: this.users(),
       },
       showHeader: false,
       modal: true,

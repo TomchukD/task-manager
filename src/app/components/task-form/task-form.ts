@@ -8,6 +8,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Task } from 'src/app/shared/item.interface';
 import { TaskService } from '../../services/task.service';
+import { UserRepo } from '../../shared/user.repo';
 
 @Component({
   selector: 'tm-task-form',
@@ -17,9 +18,11 @@ import { TaskService } from '../../services/task.service';
 })
 export class TaskForm {
   private fb = inject(FormBuilder);
+  private userRepo = inject(UserRepo);
   private dialogRef = inject(DynamicDialogRef, { optional: true });
   protected config = inject(DynamicDialogConfig);
   private taskService = inject(TaskService);
+  users = this.userRepo.assigneeUser;
 
   readonly statusOptions: { label: string; value: Task['status'] }[] = [
     { label: 'To do', value: 'todo' },
@@ -33,8 +36,6 @@ export class TaskForm {
     { label: 'High', value: 'high' },
   ];
 
-  public assigneeOptions: string[] = [];
-
   taskForm = this.fb.group({
     title: ['', Validators.required],
     assignee: [''],
@@ -45,6 +46,8 @@ export class TaskForm {
   });
 
   ngOnInit() {
+    this.userRepo.getUsers();
+
     if (this.config.data.taskId) {
       this.taskSettings();
     }
